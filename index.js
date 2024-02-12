@@ -1,12 +1,15 @@
 // index.js
 
 const express = require('express');
+const app = express();
 const axios = require('axios');
 
 const request = require('supertest');
 
+const cors = require('cors');
+app.use(cors());
 
-const app = express();
+
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
