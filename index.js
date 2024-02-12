@@ -15,6 +15,15 @@ app.use(express.json());
 app.get('/', (req, res) => {
     res.send('Welcome to the Cocktail DB Wrapper API!');
 });
+
+
+// Start the server
+// Comment out or conditionalize the server start logic when testing
+//app.listen(port, () => {
+    //console.log(`Server is running on http://localhost:${port}`);
+//});
+
+// Export the app for testing
 module.exports = app;
 
 // Search by Name
