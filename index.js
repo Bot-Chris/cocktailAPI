@@ -101,7 +101,6 @@ app.get('/filter/ingredient', async (req, res) => {
         return common.filter(commonCocktail => cocktails.some(cocktail => cocktail.idDrink === commonCocktail.idDrink));
     });
 
-    // Apply pagination here 
 
     res.json(commonCocktails);
 });
@@ -131,6 +130,34 @@ app.get('/filter/alcoholic', async (req, res) => {
     } catch (error) {
         return res.status(500).json({ error: 'Failed to fetch data from The Cocktail DB' });
     }
+});
+    
+    // Filter by Glass
+app.get('/filter/glass', async (req, res) => {
+    const { type } = req.query;
+
+    if (!type) {
+        return res.status(400).json({ error: 'Glass type query parameter is required' });
+    }
+
+    const apiUrl = `https://www.thecocktaildb.com/api/json/v1/1/filter.php?g=${encodeURIComponent(type)}`;
+
+    try {
+        const response = await axios.get(apiUrl);
+        const cocktails = response.data.drinks; // Assuming this is the array of cocktails
+
+        // Implement pagination
+        const { page = 1, limit = 10 } = req.query;
+        const startIndex = (page - 1) * limit;
+        const endIndex = page * limit;
+        const paginatedCocktails = cocktails.slice(startIndex, endIndex);
+
+        res.json(paginatedCocktails);
+    } catch (error) {
+        return res.status(500).json({ error: 'Failed to fetch data from The Cocktail DB' });
+    }
+
+    
 });
 
 
